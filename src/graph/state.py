@@ -1,18 +1,26 @@
 from typing import List, Dict, Any, Optional
-from dataclasses import dataclass, field
+from typing_extensions import TypedDict
 
-@dataclass
-class Source:
-    title: str
-    url: str
-    content: str
-    meta: Dict[str, Any] = field(default_factory=dict)
 
-@dataclass
-class AgentState:
+class AgentState(TypedDict, total=False):
+    """
+    Shared state for the research graph.
+    LangGraph will pass this between nodes.
+    """
+    # User query
     query: str
-    plan: Optional[Dict[str, Any]] = None
-    sources: List[Source] = field(default_factory=list)
-    notes: List[Dict[str, Any]] = field(default_factory=list)
-    report_markdown: Optional[str] = None
-    drive_file_link: Optional[str] = None
+
+    # Research plan (subquestions, focus, etc.)
+    plan: Dict[str, Any]
+
+    # Raw web sources from Tavily
+    sources: List[Dict[str, Any]]
+
+    # (Optional) intermediate notes if we add them later
+    notes: List[Dict[str, Any]]
+
+    # Final report in markdown
+    report_markdown: str
+
+    # Google Docs link (we'll fill this in Step 4)
+    drive_file_link: Optional[str]
