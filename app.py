@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.graph import build_research_graph
 
+
 def main():
     st.set_page_config(page_title="Research-Agent", page_icon="🧠", layout="wide")
     st.title("🧠 Research-Agent")
@@ -18,16 +19,21 @@ def main():
         st.session_state.graph = build_research_graph()
 
     if st.button("Run Research", type="primary", disabled=not query.strip()):
-        with st.spinner("Running research pipeline (stub)..."):
+        with st.spinner("Running research pipeline..."):
             graph = st.session_state.graph
             result_state = graph(query=query)
 
-        st.success("Research pipeline completed (stub).")
-        st.subheader("Report preview")
-        st.markdown(result_state.report_markdown or "_No report generated yet._")
+        st.success("Research pipeline completed.")
 
-        if result_state.drive_file_link:
-            st.markdown(f"[Open in Google Docs]({result_state.drive_file_link})")
+        report_md = result_state.get("report_markdown")
+        st.subheader("Report preview")
+        st.markdown(report_md or "_No report generated yet._")
+
+        drive_link = result_state.get("drive_file_link")
+        if drive_link:
+            st.markdown(f"[Open in Google Docs]({drive_link})")
+
 
 if __name__ == "__main__":
     main()
+
