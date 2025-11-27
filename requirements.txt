@@ -1,0 +1,13 @@
+streamlit
+langgraph
+langchain-core
+langchain-openai
+
+tavily-python
+
+python-dotenv
+
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
